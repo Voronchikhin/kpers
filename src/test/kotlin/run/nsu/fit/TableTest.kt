@@ -12,4 +12,15 @@ internal class TableTest{
             val name = integer("name")
         }
     }
+
+    @Test
+    fun `test simple select query`(){
+        val users = object : Table(){
+            val id= integer("id")
+            val name = integer("name")
+        }
+        users.select {
+            users.id eq users.name
+        }
+    }
 }
