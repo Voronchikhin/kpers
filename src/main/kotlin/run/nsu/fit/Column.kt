@@ -1,5 +1,5 @@
 package run.nsu.fit
 
-class Column {
+class Column<R> {
 
 }

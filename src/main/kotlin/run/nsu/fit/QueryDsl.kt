@@ -1,5 +1,5 @@
 package run.nsu.fit
 
 class QueryDsl {
-    infix fun Column.eq( column: Column){}
+    infix fun<R> Column<R>.eq( column: Column<R>){}
 }

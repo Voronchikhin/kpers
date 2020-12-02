@@ -28,10 +28,10 @@ internal class TableTest {
     fun `create simple insert query`() {
         val users = object : Table() {
             val id = integer("id")
-            val name = integer("name")
+            val name = varchar("name", 15)
         }
         users.insert {
-            this[users.id] = ""
+            this[users.id] = 25
             this[users.name] = "Maxim"
         }
     }
