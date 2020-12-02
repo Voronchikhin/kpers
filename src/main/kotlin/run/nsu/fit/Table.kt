@@ -8,4 +8,15 @@ open class Table {
     fun select(query: QueryDsl.()-> Unit){
 
     }
+    fun insert(block: Row.()->Unit){
+
+    }
+}
+open class Row{
+    operator fun get(column: Column): Any {
+        return ""
+    }
+    operator fun set(column: Column, value: Any){
+        return
+    }
 }
