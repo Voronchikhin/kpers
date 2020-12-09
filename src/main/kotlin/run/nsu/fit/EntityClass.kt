@@ -5,7 +5,7 @@ open class EntityClass<T>(val table: Table, entityType: Class<T>? = null) {
         return null
     }
 
-    fun find(op: Op<Boolean>): Sequence<T> {
+    fun find(condition: Condition): Sequence<T> {
         return sequenceOf()
     }
 

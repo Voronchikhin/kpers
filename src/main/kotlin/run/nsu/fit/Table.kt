@@ -9,7 +9,7 @@ open class Table {
         return Column()
     }
 
-    fun select(query: QueryDsl.() -> Unit) {
+    fun select(query: QueryDsl.() -> Condition) {
 
     }
 
@@ -17,8 +17,8 @@ open class Table {
 
     }
 
-    fun innerJoin( otherTable: Table, query: QueryDsl.() -> Unit): Table{
-        return Table()
+    fun innerJoin( otherTable: Table, query: QueryDsl.() -> Condition): Table{
+        return TODO()
     }
 
 }
