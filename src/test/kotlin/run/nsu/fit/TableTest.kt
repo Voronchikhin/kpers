@@ -2,6 +2,7 @@ package run.nsu.fit
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import kotlin.reflect.KProperty
 
 internal class TableTest {
 
@@ -33,6 +34,22 @@ internal class TableTest {
         users.insert {
             this[users.id] = 25
             this[users.name] = "Maxim"
+        }
+    }
+
+    @Test
+    fun `create simple join`(){
+        val users = object : Table() {
+            val id = integer("id")
+            val name = varchar("name", 15)
+        }
+        val badUsers = object : Table() {
+            val id = integer("id")
+            val name = varchar("name", 15)
+        }
+
+        users.innerJoin(badUsers){
+            users.id eq  badUsers.id
         }
     }
 }

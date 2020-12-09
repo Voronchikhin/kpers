@@ -16,6 +16,11 @@ open class Table {
     fun insert(block: Row.() -> Unit) {
 
     }
+
+    fun innerJoin( otherTable: Table, query: QueryDsl.() -> Unit): Table{
+        return Table()
+    }
+
 }
 
 open class Row {
