@@ -13,6 +13,10 @@ open class Table {
 
     }
 
+    fun delete(query: QueryDsl.() -> Condition) {
+
+    }
+
     fun insert(block: Row.() -> Unit) {
 
     }
