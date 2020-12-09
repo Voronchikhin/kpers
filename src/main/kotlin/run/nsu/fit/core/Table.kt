@@ -1,4 +1,4 @@
-package run.nsu.fit
+package run.nsu.fit.core
 
 open class Table {
     fun varchar(name: String, length: Int): Column<String> {
@@ -17,7 +17,7 @@ open class Table {
 
     }
 
-    fun innerJoin( otherTable: Table, query: QueryDsl.() -> Condition): Table{
+    fun innerJoin(otherTable: Table, query: QueryDsl.() -> Condition): Table {
         return TODO()
     }
 

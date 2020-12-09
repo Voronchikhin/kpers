@@ -1,4 +1,4 @@
-package run.nsu.fit
+package run.nsu.fit.core
 
 import kotlin.reflect.KProperty
 

@@ -1,4 +1,4 @@
-package run.nsu.fit
+package run.nsu.fit.core
 
 open class EntityClass<T>(val table: Table, entityType: Class<T>? = null) {
     fun findById(id: Int): T? {

@@ -1,6 +1,9 @@
 package run.nsu.fit
 
 import org.junit.jupiter.api.Test
+import run.nsu.fit.core.Entity
+import run.nsu.fit.core.EntityClass
+import run.nsu.fit.core.Table
 
 internal class EntityClassTest{
     @Test

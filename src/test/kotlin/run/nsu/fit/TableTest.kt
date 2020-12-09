@@ -1,8 +1,7 @@
 package run.nsu.fit
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.reflect.KProperty
+import run.nsu.fit.core.Table
 
 internal class TableTest {
 
