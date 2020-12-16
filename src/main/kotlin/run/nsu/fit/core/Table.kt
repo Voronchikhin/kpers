@@ -1,19 +1,24 @@
 package run.nsu.fit.core
 
 open class Table {
+    private val columns = mutableListOf<Column<*>>()
     fun varchar(name: String, length: Int): Column<String> {
-        return Column()
+        val column = Column.Varchar(this, name , length)
+        columns.add(column)
+        return column
     }
 
     fun integer(name: String): Column<Int> {
-        return Column()
+        val column = Column.Integer(this, name)
+        columns.add(column)
+        return column
     }
 
-    fun select(query: QueryDsl.() -> Condition) {
+    fun select(condition: ConditionDsl.() -> Condition) {
 
     }
 
-    fun delete(query: QueryDsl.() -> Condition) {
+    fun delete(condition: ConditionDsl.() -> Condition) {
 
     }
 
@@ -21,10 +26,15 @@ open class Table {
 
     }
 
-    fun innerJoin(otherTable: Table, query: QueryDsl.() -> Condition): Table {
+    fun innerJoin(otherTable: Table, condition: ConditionDsl.() -> Condition): Table {
         return TODO()
     }
-
+    fun getColumns(): List<Column<*>>{
+        return columns
+    }
+    fun getName(): String{
+        return this.javaClass.name
+    }
 }
 
 open class Row {
