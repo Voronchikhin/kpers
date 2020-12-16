@@ -8,7 +8,6 @@ internal class TableTest {
     @Test
     fun `test simple table description`() {
         val users = object : Table() {
-            val id = integer("id")
             val name = integer("name")
         }
     }
@@ -16,7 +15,6 @@ internal class TableTest {
     @Test
     fun `test simple select query`() {
         val users = object : Table() {
-            val id = integer("id")
             val name = integer("name")
         }
         users.select {
@@ -27,7 +25,6 @@ internal class TableTest {
     @Test
     fun `create simple insert query`() {
         val users = object : Table() {
-            val id = integer("id")
             val name = varchar("name", 15)
         }
         users.insert {
@@ -39,11 +36,9 @@ internal class TableTest {
     @Test
     fun `create simple join`(){
         val users = object : Table() {
-            val id = integer("id")
             val name = varchar("name", 15)
         }
         val badUsers = object : Table() {
-            val id = integer("id")
             val name = varchar("name", 15)
         }
 

@@ -4,6 +4,7 @@ import run.nsu.fit.core.Column
 import run.nsu.fit.core.Condition
 import run.nsu.fit.core.Row
 import run.nsu.fit.core.Table
+import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 import java.sql.*
 
@@ -83,7 +84,24 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
         fun select(table: Table, condition: Condition): String {
             TODO("Not yet implemented")
         }
+        internal fun processCondition(condition: Condition): String{
+            return "WHERE ( ${doPrecessingCondition(condition)} )"
+        }
+        private fun doPrecessingCondition(condition: Condition): String{
+            return when(condition){
+                is Condition.Equal<*> -> " ${condition.first.refName()} = ${condition.second.refName()} "
+                is Condition.Const<*> -> {
+                    if( condition.column is Column.Integer ) {
+                        " ${condition.column.refName()} = ${condition.value} "
+                    } else{
+                        " ${condition.column.refName()} = '${condition.value}' "
+                    }
+                }
 
+                is Condition.And -> " (${doPrecessingCondition(condition.first)}) AND (${doPrecessingCondition(condition.second)}) "
+                else -> throw IllegalArgumentException("fuck this")
+            }
+        }
     }
 
 }

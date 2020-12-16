@@ -1,6 +1,6 @@
 package run.nsu.fit.core
 
-open class EntityClass<T>(val table: Table, entityType: Class<T>? = null) {
+open class EntityClass<T>(val table: Table, entityType: Class<T>) {
     fun findById(id: Int): T? {
         return null
     }

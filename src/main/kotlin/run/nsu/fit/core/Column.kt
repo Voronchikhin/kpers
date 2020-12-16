@@ -8,4 +8,5 @@ sealed class Column<T>(val table: Table, val name: String) {
     class Varchar(table: Table, name: String, val length: Int): Column<String>(table, name){
 
     }
+    fun refName():String = "${table.getName()}.$name"
 }
