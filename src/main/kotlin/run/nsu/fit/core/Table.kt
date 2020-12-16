@@ -2,6 +2,7 @@ package run.nsu.fit.core
 
 open class Table {
     private val columns = mutableListOf<Column<*>>()
+    val id = integer("id")
     fun varchar(name: String, length: Int): Column<String> {
         val column = Column.Varchar(this, name , length)
         columns.add(column)
@@ -33,16 +34,17 @@ open class Table {
         return columns
     }
     fun getName(): String{
-        return this.javaClass.name
+        return this.javaClass.simpleName
     }
 }
 
 open class Row {
-    operator fun <R> get(column: Column<R>): R {
-        return TODO()
+    val map  = mutableMapOf<Column<*>, Any?>()
+    operator fun <R> get(column: Column<R>): R? {
+        return map.getOrDefault(column, null) as? R?
     }
 
-    operator fun <R> set(column: Column<R>, value: R) {
-        return
+    operator fun <R> set(column: Column<R>, value: Any) {
+        map[column] = value
     }
 }

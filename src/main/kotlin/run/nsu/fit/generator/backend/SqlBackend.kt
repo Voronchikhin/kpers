@@ -27,7 +27,7 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
 
     override fun insert(table: Table, row: Row) {
 
-        connection.createStatement().execute("")
+        connection.createStatement().execute(SqlGenerator.insert(table, row))
     }
 
     override fun delete(table: Table, condition: Condition) {
@@ -35,18 +35,34 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
     }
 
     override fun select(table: Table, condition: Condition): Sequence<Row> {
-        TODO("Not yet implemented")
+        val sql = SqlGenerator.select(table, condition)
+        val createStatement = connection.createStatement()
+        val resultSet = createStatement.executeQuery(sql)
+        return sequence {
+            while(resultSet.next()){
+                val row = Row()
+                table.getColumns().forEach {
+                    row[it] = it.extractValue(resultSet) as Any
+                }
+                yield(row)
+            }
+        }
     }
-
+    private fun <R> Column<R>.extractValue(resultSet: ResultSet): R{
+        return when(this){
+            is Column.Integer -> resultSet.getInt(this.name) as R
+            is Column.Varchar -> resultSet.getString(this.name) as R
+        }
+    }
     companion object SqlGenerator {
         fun createTable(tableName: String, block: CreateTableDSL): String {
             val columnString = StringBuilder()
             block.columnsAcc.forEach {
-                columnString.append("${it.columnName} ${it.columnType},")
+                columnString.append(" ${it.columnName} ${it.columnType}, ")
             }
-            columnString.deleteAt(columnString.length - 1)
-
-            return "CREATE TABLE $tableName(${columnString});"
+            columnString.deleteAt(columnString.length - 2)
+            println("CREATE TABLE $tableName (${columnString});")
+            return "CREATE TABLE $tableName (${columnString});"
         }
 
         fun insert(table: Table, row: Row): String {
@@ -56,7 +72,6 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
                     is Column.Integer -> list.add(ItemData(it.name, row[it].toString()))
                     is Column.Varchar -> list.add(ItemData(it.name, "'${row[it]}'"))
                 }
-                list.add(ItemData(it.name, row[it].toString()))
             }
             return "INSERT INTO ${table.getName()} (${list.joinToString { it.columnName }}) VALUES ( ${list.joinToString { it.value }} );"
         }

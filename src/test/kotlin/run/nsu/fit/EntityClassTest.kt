@@ -12,12 +12,10 @@ internal class EntityClassTest{
     }
 }
 object Users: Table(){
-    val id = integer("id")
     val name = varchar("name", 32)
     val classId = integer("classId")
 }
 object Rooms: Table() {
-    val id = integer("id")
     val name = varchar("name", 6)
 }
 class Room(id: Int) : Entity(id){
