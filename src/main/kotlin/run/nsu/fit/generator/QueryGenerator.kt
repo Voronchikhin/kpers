@@ -26,4 +26,5 @@ class QueryGenerator(private val backend: Backend) {
     fun getRows(table: Table, condition: Condition): Sequence<Row> {
         return backend.select(table, condition)
     }
+
 }

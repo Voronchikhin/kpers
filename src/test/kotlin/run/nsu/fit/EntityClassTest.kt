@@ -7,7 +7,7 @@ import run.nsu.fit.core.Table
 
 internal class EntityClassTest{
     @Test
-    fun `orm`(){
+    fun orm(){
         val user = User.findById(25)
     }
 }

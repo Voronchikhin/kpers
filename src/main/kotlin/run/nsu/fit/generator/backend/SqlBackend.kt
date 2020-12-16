@@ -4,12 +4,13 @@ import run.nsu.fit.core.Column
 import run.nsu.fit.core.Condition
 import run.nsu.fit.core.Row
 import run.nsu.fit.core.Table
+import java.io.Closeable
 import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 import java.sql.*
 
 
-class SqlBackend(driver: Driver, url: String, user: String, password: String) : Backend {
+class SqlBackend(driver: Driver, url: String, user: String, password: String) : Backend, Closeable {
     private val connection: Connection = DriverManager.getConnection(url, user, password)
 
 
@@ -27,8 +28,8 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
     )
 
     override fun insert(table: Table, row: Row) {
-
-        connection.createStatement().execute(SqlGenerator.insert(table, row))
+        val insertSql = SqlGenerator.insert(table, row)
+        connection.createStatement().execute(insertSql)
     }
 
     override fun delete(table: Table, condition: Condition) {
@@ -78,17 +79,18 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
         }
 
         fun delete(table: Table, condition: Condition): String {
-            TODO("Not yet implemented")
+            return "DELETE * FROM ${table.getName()} ${processCondition(condition)}"
         }
 
         fun select(table: Table, condition: Condition): String {
-            TODO("Not yet implemented")
+            return "SELECT * FROM ${table.getName()} ${processCondition(condition)}"
         }
         internal fun processCondition(condition: Condition): String{
             return "WHERE ( ${doPrecessingCondition(condition)} )"
         }
         private fun doPrecessingCondition(condition: Condition): String{
             return when(condition){
+                is Condition.Any -> "1 = 1"
                 is Condition.Equal<*> -> " ${condition.first.refName()} = ${condition.second.refName()} "
                 is Condition.Const<*> -> {
                     if( condition.column is Column.Integer ) {
@@ -102,6 +104,10 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
                 else -> throw IllegalArgumentException("fuck this")
             }
         }
+    }
+
+    override fun close() {
+        connection.close()
     }
 
 }
