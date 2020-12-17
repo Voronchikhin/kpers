@@ -44,6 +44,6 @@ internal class TableTest {
 
         users.innerJoin(badUsers){
             users.id eq  badUsers.id
-        }
+        }//.slice(users.name).wrap(Person1)
     }
 }

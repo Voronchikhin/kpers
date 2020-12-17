@@ -10,5 +10,6 @@ interface Backend {
     fun insert(table: Table, row: Row)
     fun delete(table: Table, condition: Condition)
     fun select(table: Table, condition: Condition): Sequence<Row>
+    fun update(table: Table, row: Row)
 
 }

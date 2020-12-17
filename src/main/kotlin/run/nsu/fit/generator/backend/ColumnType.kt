@@ -6,7 +6,7 @@ sealed class ColumnType {
             return "INT"
         }
     }
-    class VARCHAR(val length: Int) : ColumnType(){
+    class VARCHAR(private val length: Int) : ColumnType(){
         override fun toString(): String {
             return "VARCHAR($length)"
         }

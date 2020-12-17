@@ -30,13 +30,11 @@ internal class SqlBackendTest {
         assertEquals("INSERT INTO SimpleTable (id, name) VALUES ( 1, 'SimpleName' );", sql)
     }
 
-    @Test
-    fun selectIntegration(){
-
-    }
 
     @Test
     fun delete() {
+        val condition = Condition.Const(SimpleTable.id, 25)
+        assertEquals("DELETE FROM SimpleTable WHERE (  SimpleTable.id = 25  )", SqlBackend.SqlGenerator.delete(SimpleTable, condition))
     }
 
     @Test

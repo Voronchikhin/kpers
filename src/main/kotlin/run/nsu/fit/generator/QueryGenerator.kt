@@ -27,4 +27,13 @@ class QueryGenerator(private val backend: Backend) {
         return backend.select(table, condition)
     }
 
+    fun updateRow(row: Row, table: Table) {
+        backend.update(table, row)
+    }
+
+    fun dropTable(rooms: Table) {
+        TODO("Not yet implemented")
+    }
+
+
 }

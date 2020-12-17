@@ -6,5 +6,6 @@ sealed class Condition(
     class And(val first: Condition, val second: Condition) : Condition()
     class Equal<T>(val first: Column<T>, val second: Column<T>) : Condition()
     class Const<T>(val column: Column<T>, val value: T): Condition()
+    class Join<T>(val column: Column<T>, val other: Column<T>):Condition()
     object Any: Condition()
 }

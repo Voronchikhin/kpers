@@ -36,8 +36,8 @@ internal class SqlBackendIntegrationTest {
     fun insert() {
 
         val row = Row()
-        row[Table100.id] = 1
-        row[Table100.name] = "name"
+        row[Table100.id] = 3
+        row[Table100.name] = "name3"
         sqlBackend.insert(Table100, row)
     }
 
@@ -47,6 +47,12 @@ internal class SqlBackendIntegrationTest {
         val toList = toList1[0]
         assertEquals("name", toList[Table100.name])
         assertEquals(1, toList[Table100.id])
+    }
+
+    @Test
+    fun delete() {
+        val condition = Condition.Const(Table100.id, 1)
+        sqlBackend.delete(Table100, condition)
     }
 }
 object Table100: Table(){

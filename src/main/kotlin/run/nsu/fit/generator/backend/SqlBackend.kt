@@ -33,7 +33,9 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
     }
 
     override fun delete(table: Table, condition: Condition) {
-        TODO("Not yet implemented")
+        val sql = SqlGenerator.delete(table, condition)
+        val createStatement = connection.createStatement()
+        createStatement.executeUpdate(sql)
     }
 
     override fun select(table: Table, condition: Condition): Sequence<Row> {
@@ -50,6 +52,11 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
             }
         }
     }
+
+    override fun update(table: Table, row: Row) {
+
+    }
+
     private fun <R> Column<R>.extractValue(resultSet: ResultSet): R{
         return when(this){
             is Column.Integer -> resultSet.getInt(this.name) as R
@@ -79,11 +86,18 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
         }
 
         fun delete(table: Table, condition: Condition): String {
-            return "DELETE * FROM ${table.getName()} ${processCondition(condition)}"
+            return "DELETE FROM ${table.getName()} ${processCondition(condition)}"
+        }
+
+        fun joinSelect(table: Table, condition: Condition): String {
+            return "select * from ${table.getName()} a inner join Users b on  b.classId = a.id"
         }
 
         fun select(table: Table, condition: Condition): String {
-            return "SELECT * FROM ${table.getName()} ${processCondition(condition)}"
+            return when(condition){
+                is Condition.Join<*> ->"SELECT * FROM "
+                else->"SELECT * FROM ${table.getName()} ${processCondition(condition)}"
+            }
         }
         internal fun processCondition(condition: Condition): String{
             return "WHERE ( ${doPrecessingCondition(condition)} )"
@@ -103,6 +117,10 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
                 is Condition.And -> " (${doPrecessingCondition(condition.first)}) AND (${doPrecessingCondition(condition.second)}) "
                 else -> throw IllegalArgumentException("fuck this")
             }
+        }
+
+        fun update(table: Table, row: Row) {
+
         }
     }
 
