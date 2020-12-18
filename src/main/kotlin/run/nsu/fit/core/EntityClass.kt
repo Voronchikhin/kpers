@@ -39,6 +39,11 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
         return findLazy(condition).toList()
     }
 
+    fun find(block: ConditionDsl.()->Condition): List<T> {
+        val condition = ConditionDsl().block()
+        return find(condition)
+    }
+
     fun all(): List<T> {
         return allLazy().toList()
     }
@@ -57,14 +62,18 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
     }
 
 
-    fun pluralRefer(otherTableColumn: Column<Int>, thisTableColumn: Column<Int>): EntityLazyRefs<T> {
+    fun pluralRefplerLazy(otherTableColumn: Column<Int>, thisTableColumn: Column<Int>): EntityLazyRefs<T> {
         return EntityLazyRefs(this, Pair(otherTableColumn, thisTableColumn))
+    }
+
+    fun pluralRefer(otherTableColumn: Column<Int>, thisTableColumn: Column<Int>): EntityEagerRefs<T> {
+        return EntityEagerRefs(this, Pair(otherTableColumn, thisTableColumn))
     }
 
 
     fun flush(any: T) {
         queryGenerator.updateRow(any.row, table)
-        any.changedCash.forEach{
+        any.changedCache.forEach{
             queryGenerator.updateRow(it.first.row, it.second)
         }
     }

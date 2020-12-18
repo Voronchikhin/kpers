@@ -75,7 +75,7 @@ class SqlBackend(driver: Driver, url: String, user: String, password: String) : 
     }
 
     override fun insertRow(row: Row, table: Table) {
-        val sql = SqlGenerator.insert(table, row)
+        insert(table, row)
     }
 
     private fun <R> Column<R>.extractValue(resultSet: ResultSet): R {

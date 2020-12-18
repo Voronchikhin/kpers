@@ -96,6 +96,6 @@ class Classroom(id: Int) : Entity(id) {
     companion object : EntityClass<Classroom>(Classrooms, Classroom::class.java)
 
     var location by Classrooms.location
-    val persons by Person.pluralRefer(Classrooms.id, Persons.classroomId)
+    val persons by Person.pluralRefplerLazy(Classrooms.id, Persons.classroomId)
 
 }

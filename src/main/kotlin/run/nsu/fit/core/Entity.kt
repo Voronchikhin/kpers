@@ -2,8 +2,8 @@ package run.nsu.fit.core
 
 import kotlin.reflect.KProperty
 
-open class Entity(id: Int) {
-    val changedCash = mutableListOf<Pair<Entity, Table>>()
+open class Entity(val id: Int) {
+    val changedCache = mutableListOf<Pair<Entity, Table>>()
 
     operator fun <T> Column<T>.getValue(o: Entity, desc: KProperty<*>): T{
         return o.row[this]!!
@@ -18,7 +18,7 @@ open class Entity(id: Int) {
         val value = this@Entity.row[this.rule.first]!!
         val condition = Condition.Const(column, value)
         return this.target.findLazy(condition).first().also {
-            changedCash.add(it to this.target.table)
+            changedCache.add(it to this.target.table)
         }
     }
 
@@ -27,7 +27,7 @@ open class Entity(id: Int) {
         val value = this@Entity.row[this.rule.first]!!
         val condition = Condition.Const(column, value)
         return this.target.findLazy(condition).map {
-            changedCash.add(it to target.table)
+            changedCache.add(it to target.table)
             it
         }
     }
@@ -37,7 +37,7 @@ open class Entity(id: Int) {
         val value = this@Entity.row[this.rule.first]!!
         val condition = Condition.Const(column, value)
         return this.target.findLazy(condition).map {
-            changedCash.add(it to target.table)
+            changedCache.add(it to target.table)
             it
         }.toList()
     }

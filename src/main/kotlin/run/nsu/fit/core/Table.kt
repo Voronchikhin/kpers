@@ -31,7 +31,7 @@ open class Table {
 
     fun insert(block: Row.() -> Unit) {
         val row = Row().apply { block() }
-        queryGenerator.updateRow(row, this)
+        queryGenerator.insertRow(row, this)
     }
 
     fun getColumns(): List<Column<*>> {
@@ -40,6 +40,10 @@ open class Table {
 
     open fun getName(): String {
         return this.javaClass.simpleName
+    }
+
+    fun dropTable(){
+        queryGenerator.dropTable(this)
     }
 
     fun createTable() {
