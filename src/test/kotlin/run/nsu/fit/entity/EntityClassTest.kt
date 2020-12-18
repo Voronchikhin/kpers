@@ -1,4 +1,4 @@
-package run.nsu.fit
+package run.nsu.fit.entity
 
 import com.mysql.cj.jdbc.Driver
 import org.junit.jupiter.api.AfterAll

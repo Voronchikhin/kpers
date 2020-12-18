@@ -57,8 +57,8 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
     }
 
 
-    fun referrersOn(otherTableColumn: Column<Int>, thisTableColumn: Column<Int>): EntityRefs<T> {
-        return EntityRefs(this, Pair(otherTableColumn, thisTableColumn))
+    fun pluralRefer(otherTableColumn: Column<Int>, thisTableColumn: Column<Int>): EntityLazyRefs<T> {
+        return EntityLazyRefs(this, Pair(otherTableColumn, thisTableColumn))
     }
 
 

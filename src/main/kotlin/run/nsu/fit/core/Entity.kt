@@ -22,7 +22,7 @@ open class Entity(id: Int) {
         }
     }
 
-    operator fun <R: Entity, T : EntityRefs<R>> T.getValue(o: Entity, desc: KProperty<*>): Sequence<R> {
+    operator fun <R: Entity, T : EntityLazyRefs<R>> T.getValue(o: Entity, desc: KProperty<*>): Sequence<R> {
         val column = this.rule.second
         val value = this@Entity.row[this.rule.first]!!
         val condition = Condition.Const(column, value)
@@ -30,6 +30,16 @@ open class Entity(id: Int) {
             changedCash.add(it to target.table)
             it
         }
+    }
+
+    operator fun <R: Entity, T : EntityEagerRefs<R>> T.getValue(o: Entity, desc: KProperty<*>): List<R> {
+        val column = this.rule.second
+        val value = this@Entity.row[this.rule.first]!!
+        val condition = Condition.Const(column, value)
+        return this.target.findLazy(condition).map {
+            changedCash.add(it to target.table)
+            it
+        }.toList()
     }
 
     var row = Row()

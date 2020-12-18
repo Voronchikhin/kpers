@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
-import run.nsu.fit.Classroom
-import run.nsu.fit.Classrooms
-import run.nsu.fit.Persons
+import run.nsu.fit.entity.Classroom
+import run.nsu.fit.entity.Classrooms
+import run.nsu.fit.entity.Persons
 import run.nsu.fit.core.*
 
 

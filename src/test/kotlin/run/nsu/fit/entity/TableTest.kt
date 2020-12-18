@@ -1,4 +1,4 @@
-package run.nsu.fit
+package run.nsu.fit.entity
 
 import org.junit.jupiter.api.Test
 import run.nsu.fit.core.Table
