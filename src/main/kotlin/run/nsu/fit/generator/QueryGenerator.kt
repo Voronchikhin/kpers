@@ -1,9 +1,6 @@
 package run.nsu.fit.generator
 
-import run.nsu.fit.core.Column
-import run.nsu.fit.core.Condition
-import run.nsu.fit.core.Row
-import run.nsu.fit.core.Table
+import run.nsu.fit.core.*
 import run.nsu.fit.generator.backend.ColumnType
 import run.nsu.fit.generator.backend.Backend
 
@@ -31,8 +28,20 @@ class QueryGenerator(private val backend: Backend) {
         backend.update(table, row)
     }
 
-    fun dropTable(rooms: Table) {
-        TODO("Not yet implemented")
+    fun join(tableOne: Table, tableTwo: Table): WrappedTable {
+        return backend.createWrappedTable(tableOne, tableTwo)
+    }
+
+    fun dropTable(table: Table) {
+        backend.drop(table)
+    }
+
+    fun deleteRows(table: Table, condition: Condition) {
+        backend.delete(table, condition)
+    }
+
+    fun insertRow(row: Row, table: Table) {
+        backend.insertRow(row, table)
     }
 
 

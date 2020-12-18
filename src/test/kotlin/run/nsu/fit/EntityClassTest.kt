@@ -37,12 +37,12 @@ internal class EntityClassTest{
         row[Rooms.id] = 1
         row[Rooms.name] = "name"
         sqlBackend.insert(Rooms, row)
-        val user = Room.all().first()
+        val user = Room.allLazy().first()
         assertEquals(user.name, "name")
         val user1 = Room.findById(1)
         assertEquals(user1!!.name, "name")
         val condition = Condition.Const(Rooms.name, "name")
-        val user2 = Room.find(condition).first()
+        val user2 = Room.findLazy(condition).first()
         assertEquals(user2.name, "name")
     }
 
@@ -60,7 +60,7 @@ internal class EntityClassTest{
         user[Users.classId] = 10
         sqlBackend.insert(Rooms, room)
         sqlBackend.insert(Users, user)
-        val toList = User.all().toList()
+        val toList = User.allLazy().toList()
         assertTrue(toList.any{
              it.room.name == "room"
         })
@@ -80,6 +80,6 @@ class Room(id: Int) : Entity(id){
 class User(id: Int) : Entity(id){
     companion object : EntityClass<User>( Users, User::class.java)
     var name by Users.name
-    var room by Room referencedBy Users.classId
+    val room by Room referencedBy Users.classId
 }
 

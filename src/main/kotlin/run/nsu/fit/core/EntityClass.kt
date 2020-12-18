@@ -19,7 +19,7 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
         }.firstOrNull()
     }
 
-    fun find(condition: Condition): Sequence<T> {
+    fun findLazy(condition: Condition): Sequence<T> {
         return queryGenerator.getRows(table, condition).map {
             val instance = constructor.newInstance(it[table.id])
             instance.row = it
@@ -27,7 +27,7 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
         }
     }
 
-    fun all(): Sequence<T> {
+    fun allLazy(): Sequence<T> {
         return queryGenerator.getRows(table, Condition.Any).map {
             val instance = constructor.newInstance(it[table.id])
             instance.row = it
@@ -35,11 +35,18 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
         }
     }
 
-    fun new(id: Int, init: T.() -> Unit) {
-        val instance = constructor.newInstance(id)
-        queryGenerator.updateRow(instance.row, table)
+    fun find(condition: Condition): List<T> {
+        return findLazy(condition).toList()
     }
 
+    fun all(): List<T> {
+        return allLazy().toList()
+    }
+
+    fun new(id: Int, init: T.() -> Unit) {
+        val instance = constructor.newInstance(id)
+        queryGenerator.insertRow(instance.row, table)
+    }
 
     infix fun referencedBy(otherTableColumn: Column<Int>): EntityRef<T> {
         return EntityRef(this, Pair(otherTableColumn, table.id))
@@ -50,9 +57,17 @@ open class EntityClass<T : Entity>(val table: Table, entityType: Class<T>) {
     }
 
 
+    fun referrersOn(otherTableColumn: Column<Int>, thisTableColumn: Column<Int>): EntityRefs<T> {
+        return EntityRefs(this, Pair(otherTableColumn, thisTableColumn))
+    }
+
 
     fun flush(any: T) {
         queryGenerator.updateRow(any.row, table)
+        any.changedCash.forEach{
+            queryGenerator.updateRow(it.first.row, it.second)
+        }
     }
+
 
 }

@@ -1,8 +1,5 @@
 package run.nsu.fit.core
 
-import kotlin.reflect.KProperty
+data class EntityRef<T : Entity>(val target: EntityClass<T>, val rule: Pair<Column<Int>, Column<Int>>)
+data class EntityRefs<T : Entity>(val target: EntityClass<T>, val rule: Pair<Column<Int>, Column<Int>>)
 
-class EntityRef<T : Entity>(val target: EntityClass<T>, val rule: Pair<Column<Int>, Column<Int>>) {
-
-
-}

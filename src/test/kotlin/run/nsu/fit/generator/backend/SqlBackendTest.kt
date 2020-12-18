@@ -3,7 +3,6 @@ package run.nsu.fit.generator.backend
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import run.nsu.fit.core.Column
 import run.nsu.fit.core.Condition
 import run.nsu.fit.core.Row
 import run.nsu.fit.core.Table
@@ -67,6 +66,12 @@ internal class SqlBackendTest {
         assertEquals("WHERE (  ( SimpleTable.id = OtherTable.id ) AND ( SimpleTable.name = OtherTable.data )  )", SqlBackend.processCondition(condition))
     }
 
+    @Test
+    fun testSelectToObject(){
+        val condition = Condition.Equal(SimpleTable.id, OtherTable.id)
+        assertEquals("SELECT * FROM SimpleTable, OtherTable WHERE (  SimpleTable.id = OtherTable.id  )", SqlBackend.selectFromTwoTable(SimpleTable, OtherTable, condition))
+    }
+
 }
 object SimpleTable: Table(){
     val name = varchar("name", 25)
@@ -75,3 +80,6 @@ object SimpleTable: Table(){
 object OtherTable: Table(){
     val data = varchar("data", 25)
 }
+
+
+

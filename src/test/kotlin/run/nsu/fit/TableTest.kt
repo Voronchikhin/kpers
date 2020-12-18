@@ -42,8 +42,5 @@ internal class TableTest {
             val name = varchar("name", 15)
         }
 
-        users.innerJoin(badUsers){
-            users.id eq  badUsers.id
-        }//.slice(users.name).wrap(Person1)
     }
 }
