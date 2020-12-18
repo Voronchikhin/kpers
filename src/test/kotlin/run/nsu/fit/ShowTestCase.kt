@@ -3,10 +3,7 @@ package run.nsu.fit
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import run.nsu.fit.core.Condition
-import run.nsu.fit.core.Entity
-import run.nsu.fit.core.EntityClass
-import run.nsu.fit.core.Table
+import run.nsu.fit.core.*
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class ShowTestCase {
@@ -92,6 +89,18 @@ class ShowTestCase {
 
     @Test
     @Order(8)
+    fun `show wrap`() {
+        val personLocation = Classrooms
+            .join(Persons)
+            .select { Condition.Any }
+            .wrap(PersonLocation::class.java)
+            .first()
+        assertEquals("Novosibirsk", personLocation.location)
+        assertEquals("Maksim", personLocation.name)
+    }
+
+    @Test
+    @Order(9)
     fun `show drop tables`() {
         Persons.dropTable()
         Classrooms.dropTable()
@@ -125,5 +134,10 @@ class Classroom(id: Int) : Entity(id) {
     //Non-lazy list
     //val personsEager by Person.pluralRefer(Classrooms.id, Persons.classroomId)
 
+}
+
+class PersonLocation(id: Int): Entity(id){
+    var name: String by Persons.name
+    var location by Classrooms.location
 }
 
